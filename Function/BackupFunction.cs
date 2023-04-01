@@ -38,6 +38,19 @@ namespace FileBackupApp.Function
             return backupList;
         }
 
+        public static List<BackupData> GetDeleteFolder(BackupSystem baseData, BackupSystem newData, string fromDir, string toDir)
+        {
+            List<BackupData> backupList = new List<BackupData>();
+            foreach(DirectoryInfo directoryInfoNew in newData.DirectoryInfoArray)
+            {
+                if(!baseData.CheckExistFolder(directoryInfoNew.FullName, toDir, fromDir))
+                {
+                    backupList.Add(new BackupData { FileName = directoryInfoNew.Name, FilePath = directoryInfoNew.FullName, LastWriteTime = directoryInfoNew.LastWriteTime, Status = "Delete" });
+                }
+            }
+            return backupList;
+        }
+
         public static void CopyFile(List<BackupData> backupList, string fromDir, string toDir)
         {
             foreach(BackupData backupData in backupList)
@@ -59,6 +72,25 @@ namespace FileBackupApp.Function
                     try
                     {
                         File.Delete(backupData.FilePath);
+                        LogFunction.WriteLog(backupData.Status + ":" + backupData.FilePath);
+                    }
+                    catch (Exception e)
+                    {
+                        LogFunction.WriteLog("Delete failed:" + backupData.FilePath + ":" + e.ToString().Replace("\r\n", ""));
+                    }
+                }
+            }
+        }
+
+        public static void DeleteEmptyFolder(List<BackupData> deleteFolderList)
+        {
+            foreach (BackupData backupData in deleteFolderList)
+            {
+                if (backupData.Status == "Delete")
+                {
+                    try
+                    {
+                        Directory.Delete(backupData.FilePath);
                         LogFunction.WriteLog(backupData.Status + ":" + backupData.FilePath);
                     }
                     catch (Exception e)

@@ -1,7 +1,10 @@
 ﻿using FileBackupApp;
 using FileBackupApp.Function;
 
+string version = "1.1";
+
 LogFunction.LogListInstance();
+LogFunction.WriteLog("version:" + version);
 LogFunction.WriteLog("Backup Start");
 ArgsFunction argsFunction = null;
 
@@ -27,6 +30,10 @@ LogFunction.WriteLog("Loading of backup destination completed");
 
 var backupList = BackupFunction.GetBackupList(oldBackup, newBackup, argsFunction.GetDictionaryValue("/fromDir"), argsFunction.GetDictionaryValue("/toDir"));
 BackupFunction.CopyFile(backupList, argsFunction.GetDictionaryValue("/fromDir"), argsFunction.GetDictionaryValue("/toDir"));
+
+var deleteFolderList = BackupFunction.GetDeleteFolder(oldBackup, newBackup, argsFunction.GetDictionaryValue("/fromDir"), argsFunction.GetDictionaryValue("/toDir"));
+deleteFolderList.Reverse();
+BackupFunction.DeleteEmptyFolder(deleteFolderList);
 
 LogFunction.WriteLog("Finish");
 

@@ -8,6 +8,7 @@ namespace FileBackupApp
     public class BackupSystem
     {
         public FileInfo[] FileInfoArray { get; set; }
+        public DirectoryInfo[] DirectoryInfoArray { get; set; }
         private string FilesPath { get; set; }
 
         public BackupSystem(string _path)
@@ -19,6 +20,7 @@ namespace FileBackupApp
         private void GetFilesInfo()
         {
             FileInfoArray = new DirectoryInfo(FilesPath).GetFiles("*", SearchOption.AllDirectories);
+            DirectoryInfoArray = new DirectoryInfo(FilesPath).GetDirectories("*", SearchOption.AllDirectories);
         }
 
         public bool CheckExistPath(string _path)
@@ -38,6 +40,18 @@ namespace FileBackupApp
             foreach (FileInfo fileInfo in FileInfoArray)
             {
                 if (fileInfo.FullName == _path.Replace(baseDrivateName, replaceDriveName))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        
+        public bool CheckExistFolder(string _path, string baseDrivateName, string replaceDriveName)
+        {
+            foreach (DirectoryInfo directoryInfo in DirectoryInfoArray)
+            {
+                if (directoryInfo.FullName == _path.Replace(baseDrivateName, replaceDriveName))
                 {
                     return true;
                 }
