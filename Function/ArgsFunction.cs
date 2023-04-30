@@ -21,6 +21,7 @@ namespace FileBackupApp.Function
         {
             if(args.Length % 2 == 0)
             {
+                PrintArgsInfomation();
                 throw new Exception("invalid argument");
             }
 
@@ -28,6 +29,7 @@ namespace FileBackupApp.Function
             {
                 if(!argsDictionary.ContainsKey(args[i]))
                 {
+                    PrintArgsInfomation();
                     throw new Exception("invalid argument " + args[i]);
                 }
                 argsDictionary[args[i]] = args[i+1];
@@ -38,6 +40,7 @@ namespace FileBackupApp.Function
         {
             if(argsDictionary["/fromDir"] == "" || argsDictionary["/toDir"] == "")
             {
+                PrintArgsInfomation();
                 throw new Exception("Required argument not entered");
             }
         }
@@ -45,6 +48,14 @@ namespace FileBackupApp.Function
         public string GetDictionaryValue(string key)
         {
             return argsDictionary[key];
+        }
+
+        private void PrintArgsInfomation()
+        {
+            LogFunction.WriteLog("Please specify the arguments according to the following.");
+            LogFunction.WriteLog("/fromDir\t:\tSpecify the directory to be backed up.(Required)");
+            LogFunction.WriteLog("/toDir\t\t:\tSpecify the backup destination directory.(Required)");
+            LogFunction.WriteLog("/logDir\t\t:\tSpecify the log output destination directory. Current directory by default.");
         }
     }
 }

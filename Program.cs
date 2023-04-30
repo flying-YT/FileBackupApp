@@ -17,7 +17,7 @@ try
 catch(Exception e)
 {
     LogFunction.WriteLog(e.ToString());
-    LogFunction.MakeLogFile(argsFunction.GetDictionaryValue("/logDir"), "log");
+    LogFunction.MakeLogFile(Environment.CurrentDirectory, "log" + DateTime.Now.ToString("yyyyMMdd"));
     return;
 }
 
@@ -37,7 +37,7 @@ BackupFunction.DeleteEmptyFolder(deleteFolderList);
 
 LogFunction.WriteLog("Finish");
 
-LogFunction.MakeLogFile(argsFunction.GetDictionaryValue("/logDir"), "log");
+LogFunction.MakeLogFile(argsFunction.GetDictionaryValue("/logDir"), "log" + DateTime.Now.ToString("yyyyMMdd"));
 
 
 
